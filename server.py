@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, make_response, redirect
 import sqlite3
+import time
+import json
 
 conn = sqlite3.connect('goat.db')
 c = conn.cursor()
@@ -16,19 +18,19 @@ c.execute('''
 
 app = Flask(__name__, static_url_path='')
 
+
 @app.route('/')
 def home():
     return render_template('homepage.html')
 
+
 @app.route('/new_shoe', methods=['GET', 'POST'])
 def new_shoe():
-
     if request.method == 'POST':
         user_id = int(request.cookies.get('user_id'))
         print(user_id)
         shoe_brand = request.form['shoe_brand']
         price = int(request.form['shoe_price'])
-
 
         conn = sqlite3.connect('goat.db')
 
@@ -42,11 +44,11 @@ def new_shoe():
 
         shoe_id = c.lastrowid
 
-
         conn.commit()
         return redirect('/display_shoes', 302)
 
     return render_template('signedin.html')
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -70,14 +72,16 @@ def signup():
         conn.commit()
 
         # store username and password in database
-        resp = make_response 
+        resp = make_response
         (redirect('/display_shoes', 302))
         resp.set_cookie('user_id', str(user_id))
     else:
         return render_template('signup.html')
 
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    username = "wow"
     if request.method == 'POST':
         print(request.form)
         username = request.form['username']
@@ -88,32 +92,38 @@ def login():
         c = conn.cursor()
         c.execute('''
             select * from users where username=? and password=?
-        ''', (username, password)) 
+        ''', (username, password))
         user = c.fetchone()
         if not user:
-            return render_template('login.html', error = 'Password is wrong')
+            return render_template('login.html', error='Password is wrong')
 
         print('found user', user)
 
         # store username and password in database
-        resp = make_response (redirect('/display_shoes', 302))
+        resp = make_response(redirect('/display_shoes', 302))
         print("this is user id", user[0])
         resp.set_cookie('user_id', str(user[0]))
         return resp
     else:
         return render_template('login.html')
 
+
 @app.route('/display_shoes', methods=['GET', 'POST'])
 def display_shoes():
-    
-        conn = sqlite3.connect('goat.db')
+    return render_template('display_shoes.html')
 
-        c = conn.cursor()
-        c.execute('''
+@app.route('/get_shoes')
+def get_shoes():
+
+    conn = sqlite3.connect('goat.db')
+
+    c = conn.cursor()
+    c.execute('''
             select * from shoes 
-        ''') 
-        shoes = c.fetchall()
-        return render_template('display_shoes.html', shoes = shoes)
+        ''')
+    shoes = c.fetchall()
+
+    return json.dumps(shoes)
 
 
 app.run()

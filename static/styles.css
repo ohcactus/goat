@@ -1,5 +1,5 @@
 body {
-  background-color: ##ffbae7; 
+  background-color: #fff; 
   text-align: center;
   font-family: 'Oswald', sans-serif;
 }
@@ -33,4 +33,71 @@ img {
 
 body {
   color: black;
+}
+
+.footer {
+  position: fixed;
+  left: 0;
+  right:0;
+  bottom: 0;
+
+}
+
+.title {
+  margin: 100px 0 100px 0;
+  font-size: 3em;
+}
+
+.auth-button {
+
+  background-color: black;
+  color: white;
+  padding: 35px;
+  width: 100%;
+}
+
+.left {
+  border-right: 2px solid white;
+}
+
+.right {
+  border-right: 2px solid white;
+}
+
+.auth-button a {
+  color: white;
+}
+
+.auth-button a:hover {
+  color: white;
+  text-decoration: none;
+}
+
+.browse {
+  margin:50px 0 50px 0;
+}
+
+.browse a {
+  color: black;
+  text-decoration: none;
+}
+
+.new_shoe {
+  margin: 100px;
+}
+
+.display_shoes {
+  text-align:center;
+  margin:100px 0 100px 0;
+} 
+
+.shoe-container {
+  padding: 100px;
+  margin: 30px;
+  background-color: black;
+  color: white;
+}
+
+.shoe-name {
+  font-weight: 600;
 }
