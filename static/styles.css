@@ -129,3 +129,9 @@ body {
 .create-account-sign {
   margin:10px 50px 20px 50px;
 }
+
+img {
+  object-fit: cover;
+  width:300px;
+  height:300px;
+}
