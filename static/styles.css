@@ -13,7 +13,7 @@ p {
   margin: 50px;
 }
 .cactus-logo {
-	width: 10px
+	width: 10px;
 	height:10px;
 }
 img {
@@ -96,10 +96,11 @@ body {
 } 
 
 .shoe-container {
-  padding: 100px;
-  margin: 30px;
+  padding: 1px;
+  margin: 0 auto;
   background-color: black;
   color: white;
+  text-align: center;
 }
 
 .shoe-name {

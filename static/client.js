@@ -6,16 +6,38 @@ $(document).ready(function() {
   var hereweare;
   $.get("/get_shoes", function(data) {
     data = JSON.parse(data);
-    data.forEach(x => {
+    data.forEach((x, i) => {
       console.log(x);
       $("#all-shoes").append(`
+          <div class="col-md-3">
              <div class="shoe-container">
              <div class="shoe-name">${x[1]}</div>
              <div>${x[2]}</div>
              <img src="${x[3]}"/>
             </div>
+          </div>
          `);
     });
+    data.forEach((x, i) => {
+      if (i > 0) {
+
+        $(".carousel-inner").append(
+          `
+          <div class="item">
+            <img src="${x[3]}" alt="Los Angeles">
+          </div>
+        `
+        )
+      } else {
+        $(".carousel-inner").append(
+          `
+          <div class="item active">
+            <img src="${x[3]}" alt="Los Angeles">
+          </div>
+        `);
+      }
+    });
+
   });
 
   console.log("Here is hereweare on line 26", hereweare);
