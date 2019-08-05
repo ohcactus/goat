@@ -56,6 +56,10 @@ body {
   width: 100%;
 }
 
+.navbar-button {
+  padding: 10px;
+}
+
 .left {
   border-right: 2px solid white;
 }
@@ -100,4 +104,28 @@ body {
 
 .shoe-name {
   font-weight: 600;
+}
+
+.homepage-header {
+  background-color: black;
+  color: white;
+  padding: 35px;
+  width: 100%;
+}
+
+.new_account {
+  margin:100px;
+}
+
+.display-shoes-header a {
+  color: black;
+  text-decoration: none;
+}
+
+.log-into-account {
+  margin:100px;
+}
+
+.create-account-sign {
+  margin:10px 50px 20px 50px;
 }

@@ -13,7 +13,7 @@ c.execute('''
 
 c.execute('''
     CREATE TABLE IF NOT EXISTS shoes
-    (id integer primary key autoincrement, brand text, price integer, user_id integer, foreign key(user_id) references users(id))
+    (id integer primary key autoincrement, brand text, price integer, url text, user_id integer, foreign key(user_id) references users(id))
 ''')
 
 app = Flask(__name__, static_url_path='')
@@ -23,6 +23,18 @@ app = Flask(__name__, static_url_path='')
 def home():
     return render_template('homepage.html')
 
+@app.route('/search')
+def search():
+    return render_template('search.html')
+
+@app.route('/profile')
+def profile():
+    username = request.cookies.get('username')
+    return render_template('profile.html', user=username)
+
+@app.route('/calendar')
+def calendar():
+    return render_template('calendar.html')
 
 @app.route('/new_shoe', methods=['GET', 'POST'])
 def new_shoe():
@@ -31,14 +43,22 @@ def new_shoe():
         print(user_id)
         shoe_brand = request.form['shoe_brand']
         price = int(request.form['shoe_price'])
+        print (request.files)
+        try:
+            if 'file' in request.files:
+                imageFile = request.files['file']
+                savePath = "./static/{}".format(imageFile.filename)
+                imageFile.save(savePath)
+        except Exception as e:
+            print(e)
 
         conn = sqlite3.connect('goat.db')
 
         c = conn.cursor()
         c.execute('''
-            INSERT INTO shoes(brand, price, user_id)
-            VALUES (?, ?, ?) 
-        ''', (shoe_brand, price, user_id))
+            INSERT INTO shoes(brand, price, url, user_id)
+            VALUES (?, ?, ?, ?) 
+        ''', (shoe_brand, price, imageFile.filename, user_id))
 
         print('saved user')
 
@@ -72,11 +92,11 @@ def signup():
         conn.commit()
 
         # store username and password in database
-        resp = make_response
-        (redirect('/display_shoes', 302))
+        resp = make_response(redirect('/display_shoes', 302))
         resp.set_cookie('user_id', str(user_id))
-    else:
-        return render_template('signup.html')
+        resp.set_cookie('username', str(username))
+        return resp
+    return render_template('signup.html')
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -103,6 +123,7 @@ def login():
         resp = make_response(redirect('/display_shoes', 302))
         print("this is user id", user[0])
         resp.set_cookie('user_id', str(user[0]))
+        resp.set_cookie('username', str(username))
         return resp
     else:
         return render_template('login.html')
@@ -125,5 +146,30 @@ def get_shoes():
 
     return json.dumps(shoes)
 
+@app.route('/get_shoes_of_user')
+def get_shoes_of_user():
+    user_id = int(request.cookies.get('user_id'))
+
+    conn = sqlite3.connect('goat.db')
+
+    c = conn.cursor()
+    c.execute('''
+            select * from shoes WHERE user_id=?
+        ''', (user_id,))
+    shoes = c.fetchall()
+
+    return json.dumps(shoes)
+
+@app.route('/search_item')
+def search_item():
+    search_item = request.args.get('searchitem') + '%'
+    print('search item:', search_item)
+    conn = sqlite3.connect('goat.db')
+
+    c = conn.cursor()
+    c.execute("select * from shoes WHERE brand LIKE ?", (search_item,))
+    shoes = c.fetchall()
+
+    return json.dumps(shoes)
 
 app.run()

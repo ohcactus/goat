@@ -4,25 +4,29 @@
   <script src="client.js"></script>
 </head>
 <body>
-  <div class="row header">
-    <div class="col-md-6">
-      HOME
+  <header class="display-shoes-header">
+    <div class="display-shoes-header">
+      <div class="row">
+        <div class="col-md-6">
+          <a href="/display_shoes">HOME</a>
+          <a href="/calendar">CALENDAR</a>
+          <!--<button id="target">click me</button>-->
+        </div>
+      </div>
     </div>
-    <button id="target">click me</button>
-    <div class="col-md-6">
-      CALENDAR
-      <div id="random-string"></div>
-    </div>
-  </div>
+  </header>
   <div class="row">
     <div class="col-md-12 display_shoes">
       {{ shoes }}
       <div id="all-shoes"></div>
     </div>
   </div>
-  <div class="row">
-    <div class="col-md-12 new_shoe">
-      <a href="/new_shoe">Add a new shoe</a>
+  <div class = "row footer">
+      <div class="col-md-3 auth-button">
+          <a class="navbar-button" href="/display-shoes">Home</a>
+          <a class="navbar-button" href="/search">Search</a>
+          <a class="navbar-button"  href="/new_shoe">Sell</a>
+          <a class="navbar-button"  href="/profile">Profile</a>
+        </div>
     </div>
-  </div>
 </body>
